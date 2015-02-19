@@ -6,6 +6,7 @@ PR_FLAGS=()
 PR_SAVED_STATUS="0"
 autoload -U colors
 colors
+setopt promptsubst
 
 function pr_aeruder_loadflags {
     local -a flag_strings
