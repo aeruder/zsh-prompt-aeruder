@@ -8,6 +8,28 @@ autoload -U colors
 colors
 setopt promptsubst
 
+function pr_aeruder_solarized {
+    pr_aeruder_fg_flag=$fg_bold[cyan]
+    pr_aeruder_fg_flag_sep=$fg_no_bold[red]
+    pr_aeruder_fg_host=$fg_no_bold[red]
+    pr_aeruder_fg_clock=$reset_color
+    pr_aeruder_fg_clock_sep=$fg_bold[cyan]
+    pr_aeruder_fg_pwd=$fg_no_bold[blue]
+    pr_aeruder_fg_root=$fg_no_bold[blue]
+}
+
+function pr_aeruder_normal {
+    pr_aeruder_fg_flag=$fg_bold[white]
+    pr_aeruder_fg_flag_sep=$fg_bold[green]
+    pr_aeruder_fg_host=$fg_no_bold[green]
+    pr_aeruder_fg_clock=$fg_no_bold[yellow]
+    pr_aeruder_fg_clock_sep=$fg_bold[white]
+    pr_aeruder_fg_pwd=$fg_bold[magenta]
+    pr_aeruder_fg_root=$fg_bold[green]
+}
+
+pr_aeruder_normal
+
 function pr_aeruder_loadflags {
     local -a flag_strings
     for a in "$PR_FLAGS[@]"; do
@@ -15,14 +37,14 @@ function pr_aeruder_loadflags {
         if [[ -z "$thisflag" ]] ; then
             thisflag="-"
         fi
-        flag_strings+=( '%{${fg_bold[white]}%}'"$thisflag"'%{${fg_bold[green]}%}' )
+        flag_strings+=( '%{${pr_aeruder_fg_flag}%}'"$thisflag"'%{${pr_aeruder_fg_flag_sep}%}' )
     done
     echo "${(e):-${(j/:/)flag_strings}}"
 }
 
 function pr_aeruder_host {
     if ! [ -z "$SSH_CLIENT" ]; then
-        echo "%{${fg_no_bold[green]}%}%n@%m "
+        echo "%{${pr_aeruder_fg_host}%}%n@%m "
     fi
 }
 
@@ -45,9 +67,9 @@ function pr_aeruder_pwd {
 
 PROMPT='${${PR_SAVED_STATUS::=$?}##*}\
 $(pr_aeruder_host)\
-%{${fg_bold[magenta]}%}$(pr_aeruder_pwd)%{${fg_bold[white]}%} \
-$(pr_aeruder_loadflags) %# %{$reset_color%}'
+%{${pr_aeruder_fg_pwd}%}$(pr_aeruder_pwd) \
+$(pr_aeruder_loadflags) %{${pr_aeruder_fg_root}%}%# %{$reset_color%}'
 
 RPROMPT='\
-%{${fg_bold[white]}%}[%{${fg_no_bold[yellow]}%}%D{%H:%M}%{$reset_color%}]'
+%{$pr_aeruder_fg_clock_sep%}[%{$pr_aeruder_fg_clock%}%D{%H:%M}%{$pr_aeruder_fg_clock_sep%}]%{$reset_color%}'
 
