@@ -43,7 +43,7 @@ function pr_aeruder_loadflags {
 }
 
 function pr_aeruder_host {
-    if ! [ -z "$SSH_CLIENT" ]; then
+    if ! [ -z "$SSH_CLIENT" ] || ! [ -z "$SSH_CONNECTION" ]; then
         echo "%{${pr_aeruder_fg_host}%}%n@%m "
     fi
 }
@@ -69,7 +69,3 @@ PROMPT='${${PR_SAVED_STATUS::=$?}##*}\
 $(pr_aeruder_host)\
 %{${pr_aeruder_fg_pwd}%}$(pr_aeruder_pwd) \
 $(pr_aeruder_loadflags) %{${pr_aeruder_fg_root}%}%# %{$reset_color%}'
-
-RPROMPT='\
-%{$pr_aeruder_fg_clock_sep%}[%{$pr_aeruder_fg_clock%}%D{%H:%M}%{$pr_aeruder_fg_clock_sep%}]%{$reset_color%}'
-
