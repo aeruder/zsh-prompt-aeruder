@@ -4,6 +4,7 @@
 
 PR_FLAGS=()
 PR_SAVED_STATUS="0"
+PR_AERUDER_MULTILINE=0
 autoload -U colors
 colors
 setopt promptsubst
@@ -65,7 +66,16 @@ function pr_aeruder_pwd {
     fi
 }
 
+function pr_aeruder_multiline_newline {
+  if [[ $PR_AERUDER_MULTILINE != 0 ]]; then
+    printf '\n/'
+  else
+    printf '/'
+  fi
+}
+
 PROMPT='${${PR_SAVED_STATUS::=$?}##*}\
 $(pr_aeruder_host)\
 %{${pr_aeruder_fg_pwd}%}$(pr_aeruder_pwd) \
-$(pr_aeruder_loadflags) %{${pr_aeruder_fg_root}%}%# %{$reset_color%}'
+$(pr_aeruder_loadflags) ${$(pr_aeruder_multiline_newline)%/}\
+%{${pr_aeruder_fg_root}%}%# %{$reset_color%}'
